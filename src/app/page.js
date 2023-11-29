@@ -13,24 +13,35 @@ export default function ThreeComponent() {
       1000,
     )
 
-    const geometry = new THREE.SphereGeometry(14, 34, 12)
+    const geometry = new THREE.SphereGeometry(14, 64, 64)
+    const sphereTexture = new THREE.TextureLoader().load('images/sphere1.jpg')
+    const sphere = new THREE.Mesh(
+      new THREE.SphereGeometry(14, 64, 64),
+      new THREE.MeshStandardMaterial({
+        color: 0xffffff,
+        map: sphereTexture,
+        opacity: 0.5,
+        transparent: true,
+      }),
+    )
 
-    const segmentMaterial = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
-      metalness: 0.5,
-    })
-    const wireframeMaterial = new THREE.MeshBasicMaterial({
-      color: 0x00febb,
-      wireframe: true,
-      opacity: 0.175,
-      transparent: true,
-    })
+    scene.add(sphere)
 
-    const segmentSphere = new THREE.Mesh(geometry, segmentMaterial)
-    const wireframeSphere = new THREE.Mesh(geometry, wireframeMaterial)
+    // const segmentMaterial = new THREE.MeshStandardMaterial({
+    //   color: 0xffffff,
+    // })
+    // const wireframeMaterial = new THREE.MeshBasicMaterial({
+    //   color: 0x00febb,
+    //   wireframe: true,
+    //   opacity: 0.175,
+    //   transparent: true,
+    // })
 
-    scene.add(segmentSphere)
-    scene.add(wireframeSphere)
+    // const segmentSphere = new THREE.Mesh(geometry, segmentMaterial)
+    // const wireframeSphere = new THREE.Mesh(geometry, wireframeMaterial)
+
+    // scene.add(segmentSphere)
+    // scene.add(wireframeSphere)
 
     const renderer = new THREE.WebGLRenderer({
       canvas: document.querySelector('#bg'),
@@ -42,9 +53,9 @@ export default function ThreeComponent() {
 
     camera.position.z = 20
 
-    const pointLight = new THREE.PointLight(0xffffff, 5)
-    const ambientLight = new THREE.AmbientLight(0x404040)
-    pointLight.position.set(3, 5, 19)
+    const pointLight = new THREE.PointLight(0xffffff, 40)
+    // const ambientLight = new THREE.AmbientLight(0x404040, 10)
+    pointLight.position.set(4, 7, 21)
     scene.add(pointLight)
     // scene.add(ambientLight)
 
@@ -70,10 +81,12 @@ export default function ThreeComponent() {
     const animate = () => {
       requestAnimationFrame(animate)
 
-      segmentSphere.rotation.x += 0.0025
-      segmentSphere.rotation.y += 0.0025
-      wireframeSphere.rotation.x += 0.0025
-      wireframeSphere.rotation.y += 0.0025
+      sphere.rotation.x += 0.0025
+      sphere.rotation.y += 0.0025
+      // segmentSphere.rotation.x += 0.0025
+      // segmentSphere.rotation.y += 0.0025
+      // wireframeSphere.rotation.x += 0.0025
+      // wireframeSphere.rotation.y += 0.0025
 
       orbitControl.update()
 
@@ -85,8 +98,9 @@ export default function ThreeComponent() {
     // Cleanup function
     return () => {
       geometry.dispose()
-      segmentMaterial.dispose()
-      wireframeMaterial.dispose()
+      sphereTexture.dispose()
+      // segmentMaterial.dispose()
+      // wireframeMaterial.dispose()
       renderer.dispose()
     }
   }, [])
