@@ -143,7 +143,7 @@ export default function ThreeComponent() {
             opacity: 0,
           }}
         >
-          <div className="font-aqua text-lg gap-5 flex flex-row justify-end m-2.5 text-white">
+          <div className="tabs font-aqua text-xl gap-12 justify-end flex flex-row mt-2.5 mr-5 text-white">
             <div>
               <a href="#">Profile</a>
             </div>
@@ -151,7 +151,7 @@ export default function ThreeComponent() {
               <a href="#">Work</a>
             </div>
           </div>
-          <div className="font-aqua flex justify-center -mt-10 items-center h-full name text-white text-3xl tracking-wider">
+          <div className="big-name font-aqua flex justify-center -mt-10 items-center h-full name text-white text-3xl tracking-wider">
             ANDREW SEBASTIAN HARDIANTA
           </div>
         </div>

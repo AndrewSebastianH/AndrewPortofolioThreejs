@@ -20,8 +20,8 @@ module.exports = {
         xl: '1.5em', // 24px
         '2xl': '1.75em', // 28px
         '3xl': '3em', // 48px
-        'error-header': '5em', // 80px
-        'error-code': '6.25em', // 100px
+        '4xl': '5em', // 80px
+        '5xl': '6.25em', // 100px
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
