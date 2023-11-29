@@ -1,8 +1,9 @@
 'use client'
 import { useEffect } from 'react'
 import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
-export default function Home() {
+export default function ThreeComponent() {
   useEffect(() => {
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(
@@ -12,48 +13,88 @@ export default function Home() {
       1000,
     )
 
-    const geometry = new THREE.BoxGeometry()
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-    const cube = new THREE.Mesh(geometry, material)
-    scene.add(cube)
+    const geometry = new THREE.SphereGeometry(14, 34, 12)
 
-    const renderer = new THREE.WebGLRenderer()
+    const segmentMaterial = new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+    })
+    const wireframeMaterial = new THREE.MeshBasicMaterial({
+      color: 0x00febb,
+      wireframe: true,
+      opacity: 0.35,
+      transparent: true,
+    })
+
+    const segmentSphere = new THREE.Mesh(geometry, segmentMaterial)
+    const wireframeSphere = new THREE.Mesh(geometry, wireframeMaterial)
+
+    scene.add(segmentSphere)
+    scene.add(wireframeSphere)
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas: document.querySelector('#bg'),
+      antialias: true,
+    })
+
     renderer.setSize(window.innerWidth, window.innerHeight)
-    renderer.setClearColor('#393646')
-    document.getElementById('bg').appendChild(renderer.domElement)
+    renderer.setClearColor('#222222')
 
-    camera.position.z = 2 // Adjust the camera position
+    camera.position.z = 20
+
+    const pointLight = new THREE.PointLight(0xffffff)
+    pointLight.position.set(3, 5, 20)
+    scene.add(pointLight)
+
+    // Helpers
+    const lightHelper = new THREE.PointLightHelper(pointLight)
+    const gridHelper = new THREE.GridHelper(200, 50)
+    scene.add(lightHelper, gridHelper)
+
+    const orbitControl = new OrbitControls(camera, renderer.domElement)
+
+    const handleResize = () => {
+      const newWidth = window.innerWidth
+      const newHeight = window.innerHeight
+
+      camera.aspect = newWidth / newHeight
+      camera.updateProjectionMatrix()
+
+      renderer.setSize(newWidth, newHeight)
+    }
+
+    window.addEventListener('resize', handleResize)
 
     const animate = () => {
       requestAnimationFrame(animate)
 
-      // Add your animation/rendering code here
-      cube.rotation.x += 0.01
-      cube.rotation.y += 0.01
+      segmentSphere.rotation.x += 0.0025
+      segmentSphere.rotation.y += 0.0025
+
+      wireframeSphere.rotation.x += 0.0025
+      wireframeSphere.rotation.y += 0.0025
+
+      orbitControl.update()
 
       renderer.render(scene, camera)
     }
 
     animate()
 
-    // Clean up Three.js resources when the component unmounts
+    // Cleanup function
     return () => {
-      // Dispose of geometries, materials, textures, etc.
       geometry.dispose()
-      material.dispose()
-
-      // Remove the canvas element
-      renderer.domElement.remove()
-
-      // Dispose of the renderer
+      segmentMaterial.dispose()
+      wireframeMaterial.dispose()
       renderer.dispose()
     }
   }, [])
 
   return (
-    <div className="w-full h-full justify-center items-center text-2xl">
-      METROPOLIS
-      <div id="bg" className="bg-teal-300"></div>
-    </div>
+    <>
+      <canvas id="bg"></canvas>
+      <div className="font-aqua absolute inset-0 flex items-center justify-center text-white text-3xl tracking-wider">
+        ANDREW SEBASTIAN HARDIANTA
+      </div>
+    </>
   )
 }
