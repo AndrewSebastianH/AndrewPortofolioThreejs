@@ -17,11 +17,12 @@ export default function ThreeComponent() {
 
     const segmentMaterial = new THREE.MeshStandardMaterial({
       color: 0xffffff,
+      metalness: 0.5,
     })
     const wireframeMaterial = new THREE.MeshBasicMaterial({
       color: 0x00febb,
       wireframe: true,
-      opacity: 0.35,
+      opacity: 0.175,
       transparent: true,
     })
 
@@ -41,9 +42,11 @@ export default function ThreeComponent() {
 
     camera.position.z = 20
 
-    const pointLight = new THREE.PointLight(0xffffff)
-    pointLight.position.set(3, 5, 20)
+    const pointLight = new THREE.PointLight(0xffffff, 5)
+    const ambientLight = new THREE.AmbientLight(0x404040)
+    pointLight.position.set(3, 5, 19)
     scene.add(pointLight)
+    // scene.add(ambientLight)
 
     // Helpers
     const lightHelper = new THREE.PointLightHelper(pointLight)
@@ -69,7 +72,6 @@ export default function ThreeComponent() {
 
       segmentSphere.rotation.x += 0.0025
       segmentSphere.rotation.y += 0.0025
-
       wireframeSphere.rotation.x += 0.0025
       wireframeSphere.rotation.y += 0.0025
 
@@ -91,9 +93,15 @@ export default function ThreeComponent() {
 
   return (
     <>
-      <canvas id="bg"></canvas>
-      <div className="font-aqua absolute inset-0 flex items-center justify-center text-white text-3xl tracking-wider">
-        ANDREW SEBASTIAN HARDIANTA
+      <canvas id="bg" className="fixed top-0 left-0" />
+      <div className="absolute w-full h-full">
+        <div className="font-aqua text-lg gap-5 flex flex-row justify-end m-2.5 text-white">
+          <div>Profile</div>
+          <div>Projects</div>
+        </div>
+        <div className="font-aqua flex justify-center -mt-10 items-center h-full ] text-white text-3xl tracking-wider">
+          ANDREW SEBASTIAN HARDIANTA
+        </div>
       </div>
     </>
   )
